@@ -46,11 +46,12 @@ estrutura_controle ::= condicional | loop_enquanto | loop_por_vezes ;
 
 condicional ::= '->' 'se' '(' expressao_logica ')' 'entao'
                     bloco_comandos
-                [ '->' 'senao' 'se' '(' expressao_logica ')' 'entao'
-                    bloco_comandos ]*
-                [ '->' 'senao'
-                    bloco_comandos ]
+                    lista_senao
                 '->' '...' ;
+
+lista_senao ::= ε
+              | '->' 'senao' bloco_comandos
+              | '->' 'senao' 'se' '(' expressao_logica ')' 'entao' bloco_comandos lista_senao ;
 
 loop_enquanto ::= '->' 'enquanto' '(' expressao_logica ')' 'faca'
                       bloco_comandos
