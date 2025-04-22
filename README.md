@@ -47,19 +47,20 @@ estrutura_controle ::= condicional | loop_enquanto | loop_por_vezes ;
 condicional ::= '->' 'se' '(' expressao_logica ')' 'entao'
                     bloco_comandos
                     lista_senao
-                '->' '...' ;
+                'fim_se' ;  // <-- CHANGED
 
 lista_senao ::= ε
               | '->' 'senao' bloco_comandos
               | '->' 'senao' 'se' '(' expressao_logica ')' 'entao' bloco_comandos lista_senao ;
+              // Note: This part still starts with '->' and likely causes the remaining conflicts
 
 loop_enquanto ::= '->' 'enquanto' '(' expressao_logica ')' 'faca'
                       bloco_comandos
-                  '->' '...' ;
+                  'fim_enquanto' ; // <-- CHANGED
 
 loop_por_vezes ::= '->' 'por' expressao_numerica 'vezes' 'faca'
                    bloco_comandos
-                   '->' '...' ;
+                   'fim_por' ;    // <-- CHANGED
 
 bloco_comandos ::= { instrucao } ;
 
@@ -85,7 +86,8 @@ logico_literal ::= 'verdadeiro' | 'falso' ;
 
 comentario_linha ::= '#' { QUALQUER_CARACTERE_EXCETO_NOVA_LINHA } NOVA_LINHA ;
 
+// Lexical Definitions (remain the same)
 IDENTIFICADOR                ::= [a-zA-Z_] [a-zA-Z0-9_]* ;
 DIGITO                       ::= '0'..'9' ;
-CARACTERE_VALIDO_SEM_ACENTO  ::= ? ;
+CARACTERE_VALIDO_SEM_ACENTO  ::= ? ; // Define as needed, e.g., any char except " and \n
 NOVA_LINHA                   ::= '\n' ;
