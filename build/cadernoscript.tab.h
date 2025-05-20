@@ -35,8 +35,8 @@
    especially those whose name start with YY_ or yy_.  They are
    private implementation details that can be changed or removed.  */
 
-#ifndef YY_YY_CADERNOSCRIPT_TAB_H_INCLUDED
-# define YY_YY_CADERNOSCRIPT_TAB_H_INCLUDED
+#ifndef YY_YY_BUILD_CADERNOSCRIPT_TAB_H_INCLUDED
+# define YY_YY_BUILD_CADERNOSCRIPT_TAB_H_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 0
@@ -57,43 +57,45 @@ extern int yydebug;
     T_ARROW = 258,                 /* T_ARROW  */
     T_GUARDE = 259,                /* T_GUARDE  */
     T_COMO = 260,                  /* T_COMO  */
-    T_SE = 261,                    /* T_SE  */
-    T_ENTAO = 262,                 /* T_ENTAO  */
-    T_SENAO = 263,                 /* T_SENAO  */
-    T_ENQUANTO = 264,              /* T_ENQUANTO  */
-    T_FACA = 265,                  /* T_FACA  */
-    T_POR = 266,                   /* T_POR  */
-    T_VEZES = 267,                 /* T_VEZES  */
-    T_ESCREVA = 268,               /* T_ESCREVA  */
-    T_LEIA = 269,                  /* T_LEIA  */
-    T_E = 270,                     /* T_E  */
-    T_OU = 271,                    /* T_OU  */
-    T_NAO = 272,                   /* T_NAO  */
-    T_COLON = 273,                 /* T_COLON  */
-    T_LPAREN = 274,                /* T_LPAREN  */
-    T_RPAREN = 275,                /* T_RPAREN  */
-    T_COMMA = 276,                 /* T_COMMA  */
-    T_EQ = 277,                    /* T_EQ  */
-    T_NEQ = 278,                   /* T_NEQ  */
-    T_LT = 279,                    /* T_LT  */
-    T_LTE = 280,                   /* T_LTE  */
-    T_GT = 281,                    /* T_GT  */
-    T_GTE = 282,                   /* T_GTE  */
-    T_PLUS = 283,                  /* T_PLUS  */
-    T_MINUS = 284,                 /* T_MINUS  */
-    T_MUL = 285,                   /* T_MUL  */
-    T_DIV = 286,                   /* T_DIV  */
-    T_NUMERO = 287,                /* T_NUMERO  */
-    T_TEXTO = 288,                 /* T_TEXTO  */
-    T_LOGICO = 289,                /* T_LOGICO  */
-    T_FIM_SE = 290,                /* T_FIM_SE  */
-    T_FIM_ENQUANTO = 291,          /* T_FIM_ENQUANTO  */
-    T_FIM_POR = 292,               /* T_FIM_POR  */
-    T_IDENTIFICADOR = 293,         /* T_IDENTIFICADOR  */
-    T_NUMERO_LITERAL = 294,        /* T_NUMERO_LITERAL  */
-    T_TEXTO_LITERAL = 295,         /* T_TEXTO_LITERAL  */
-    T_VERDADEIRO = 296,            /* T_VERDADEIRO  */
-    T_FALSO = 297                  /* T_FALSO  */
+    T_NUMERO = 261,                /* T_NUMERO  */
+    T_TEXTO = 262,                 /* T_TEXTO  */
+    T_LOGICO = 263,                /* T_LOGICO  */
+    T_SE = 264,                    /* T_SE  */
+    T_ENTAO = 265,                 /* T_ENTAO  */
+    T_SENAO = 266,                 /* T_SENAO  */
+    T_FIM_SE = 267,                /* T_FIM_SE  */
+    T_ENQUANTO = 268,              /* T_ENQUANTO  */
+    T_FACA = 269,                  /* T_FACA  */
+    T_FIM_ENQUANTO = 270,          /* T_FIM_ENQUANTO  */
+    T_POR = 271,                   /* T_POR  */
+    T_VEZES = 272,                 /* T_VEZES  */
+    T_FIM_POR = 273,               /* T_FIM_POR  */
+    T_ESCREVA = 274,               /* T_ESCREVA  */
+    T_LEIA = 275,                  /* T_LEIA  */
+    T_E = 276,                     /* T_E  */
+    T_OU = 277,                    /* T_OU  */
+    T_NAO = 278,                   /* T_NAO  */
+    T_APONTE_LAPIS = 279,          /* T_APONTE_LAPIS  */
+    T_USOS = 280,                  /* T_USOS  */
+    T_COLON = 281,                 /* T_COLON  */
+    T_LPAREN = 282,                /* T_LPAREN  */
+    T_RPAREN = 283,                /* T_RPAREN  */
+    T_COMMA = 284,                 /* T_COMMA  */
+    T_EQ = 285,                    /* T_EQ  */
+    T_NEQ = 286,                   /* T_NEQ  */
+    T_LT = 287,                    /* T_LT  */
+    T_LTE = 288,                   /* T_LTE  */
+    T_GT = 289,                    /* T_GT  */
+    T_GTE = 290,                   /* T_GTE  */
+    T_PLUS = 291,                  /* T_PLUS  */
+    T_MINUS = 292,                 /* T_MINUS  */
+    T_MUL = 293,                   /* T_MUL  */
+    T_DIV = 294,                   /* T_DIV  */
+    T_IDENTIFICADOR = 295,         /* T_IDENTIFICADOR  */
+    T_NUMERO_LITERAL = 296,        /* T_NUMERO_LITERAL  */
+    T_TEXTO_LITERAL = 297,         /* T_TEXTO_LITERAL  */
+    T_VERDADEIRO = 298,            /* T_VERDADEIRO  */
+    T_FALSO = 299                  /* T_FALSO  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -102,10 +104,11 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 15 "cadernoscript.y"
- char *sval; 
+#line 18 "src/cadernoscript.y"
 
-#line 109 "cadernoscript.tab.h"
+    char* sval;
+
+#line 112 "build/cadernoscript.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -120,4 +123,4 @@ extern YYSTYPE yylval;
 int yyparse (void);
 
 
-#endif /* !YY_YY_CADERNOSCRIPT_TAB_H_INCLUDED  */
+#endif /* !YY_YY_BUILD_CADERNOSCRIPT_TAB_H_INCLUDED  */

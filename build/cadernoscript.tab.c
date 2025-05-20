@@ -67,20 +67,23 @@
 
 
 /* First part of user prologue.  */
-#line 2 "cadernoscript.y"
+#line 1 "src/cadernoscript.y"
 
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <stdlib.h> // Para free
+#include <string.h> // Para strncmp em yyerror
 
 extern int yylex();
 extern int yylineno;
-extern char *yytext;
+extern char *yytext; // yytext é do Flex
 extern FILE *yyin;
+
+// Declaração da flag global definida em main.c
+extern int syntax_error_occurred;
 
 void yyerror(const char *s);
 
-#line 84 "cadernoscript.tab.c"
+#line 87 "build/cadernoscript.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -114,74 +117,49 @@ enum yysymbol_kind_t
   YYSYMBOL_T_ARROW = 3,                    /* T_ARROW  */
   YYSYMBOL_T_GUARDE = 4,                   /* T_GUARDE  */
   YYSYMBOL_T_COMO = 5,                     /* T_COMO  */
-  YYSYMBOL_T_SE = 6,                       /* T_SE  */
-  YYSYMBOL_T_ENTAO = 7,                    /* T_ENTAO  */
-  YYSYMBOL_T_SENAO = 8,                    /* T_SENAO  */
-  YYSYMBOL_T_ENQUANTO = 9,                 /* T_ENQUANTO  */
-  YYSYMBOL_T_FACA = 10,                    /* T_FACA  */
-  YYSYMBOL_T_POR = 11,                     /* T_POR  */
-  YYSYMBOL_T_VEZES = 12,                   /* T_VEZES  */
-  YYSYMBOL_T_ESCREVA = 13,                 /* T_ESCREVA  */
-  YYSYMBOL_T_LEIA = 14,                    /* T_LEIA  */
-  YYSYMBOL_T_E = 15,                       /* T_E  */
-  YYSYMBOL_T_OU = 16,                      /* T_OU  */
-  YYSYMBOL_T_NAO = 17,                     /* T_NAO  */
-  YYSYMBOL_T_COLON = 18,                   /* T_COLON  */
-  YYSYMBOL_T_LPAREN = 19,                  /* T_LPAREN  */
-  YYSYMBOL_T_RPAREN = 20,                  /* T_RPAREN  */
-  YYSYMBOL_T_COMMA = 21,                   /* T_COMMA  */
-  YYSYMBOL_T_EQ = 22,                      /* T_EQ  */
-  YYSYMBOL_T_NEQ = 23,                     /* T_NEQ  */
-  YYSYMBOL_T_LT = 24,                      /* T_LT  */
-  YYSYMBOL_T_LTE = 25,                     /* T_LTE  */
-  YYSYMBOL_T_GT = 26,                      /* T_GT  */
-  YYSYMBOL_T_GTE = 27,                     /* T_GTE  */
-  YYSYMBOL_T_PLUS = 28,                    /* T_PLUS  */
-  YYSYMBOL_T_MINUS = 29,                   /* T_MINUS  */
-  YYSYMBOL_T_MUL = 30,                     /* T_MUL  */
-  YYSYMBOL_T_DIV = 31,                     /* T_DIV  */
-  YYSYMBOL_T_NUMERO = 32,                  /* T_NUMERO  */
-  YYSYMBOL_T_TEXTO = 33,                   /* T_TEXTO  */
-  YYSYMBOL_T_LOGICO = 34,                  /* T_LOGICO  */
-  YYSYMBOL_T_FIM_SE = 35,                  /* T_FIM_SE  */
-  YYSYMBOL_T_FIM_ENQUANTO = 36,            /* T_FIM_ENQUANTO  */
-  YYSYMBOL_T_FIM_POR = 37,                 /* T_FIM_POR  */
-  YYSYMBOL_T_IDENTIFICADOR = 38,           /* T_IDENTIFICADOR  */
-  YYSYMBOL_T_NUMERO_LITERAL = 39,          /* T_NUMERO_LITERAL  */
-  YYSYMBOL_T_TEXTO_LITERAL = 40,           /* T_TEXTO_LITERAL  */
-  YYSYMBOL_T_VERDADEIRO = 41,              /* T_VERDADEIRO  */
-  YYSYMBOL_T_FALSO = 42,                   /* T_FALSO  */
-  YYSYMBOL_YYACCEPT = 43,                  /* $accept  */
-  YYSYMBOL_programa = 44,                  /* programa  */
-  YYSYMBOL_instrucao_list_principal = 45,  /* instrucao_list_principal  */
-  YYSYMBOL_instrucao = 46,                 /* instrucao  */
-  YYSYMBOL_instrucao_corpo = 47,           /* instrucao_corpo  */
-  YYSYMBOL_declaracao_corpo = 48,          /* declaracao_corpo  */
-  YYSYMBOL_declaracao_variavel_corpo = 49, /* declaracao_variavel_corpo  */
-  YYSYMBOL_opt_inicializacao = 50,         /* opt_inicializacao  */
-  YYSYMBOL_tipo = 51,                      /* tipo  */
-  YYSYMBOL_comando_corpo = 52,             /* comando_corpo  */
-  YYSYMBOL_atribuicao_corpo = 53,          /* atribuicao_corpo  */
-  YYSYMBOL_estrutura_controle_corpo = 54,  /* estrutura_controle_corpo  */
-  YYSYMBOL_condicional_corpo = 55,         /* condicional_corpo  */
-  YYSYMBOL_lista_senao = 56,               /* lista_senao  */
-  YYSYMBOL_loop_enquanto_corpo = 57,       /* loop_enquanto_corpo  */
-  YYSYMBOL_loop_por_vezes_corpo = 58,      /* loop_por_vezes_corpo  */
-  YYSYMBOL_bloco_comandos = 59,            /* bloco_comandos  */
-  YYSYMBOL_instrucao_list_bloco = 60,      /* instrucao_list_bloco  */
-  YYSYMBOL_comando_io_corpo = 61,          /* comando_io_corpo  */
-  YYSYMBOL_comando_escrever_corpo = 62,    /* comando_escrever_corpo  */
-  YYSYMBOL_expressao_list = 63,            /* expressao_list  */
-  YYSYMBOL_comando_ler_corpo = 64,         /* comando_ler_corpo  */
-  YYSYMBOL_expressao = 65,                 /* expressao  */
-  YYSYMBOL_expressao_logica = 66,          /* expressao_logica  */
-  YYSYMBOL_expressao_comparativa = 67,     /* expressao_comparativa  */
-  YYSYMBOL_expressao_aritmetica = 68,      /* expressao_aritmetica  */
-  YYSYMBOL_termo = 69,                     /* termo  */
-  YYSYMBOL_fator = 70,                     /* fator  */
-  YYSYMBOL_numero_literal = 71,            /* numero_literal  */
-  YYSYMBOL_texto_literal = 72,             /* texto_literal  */
-  YYSYMBOL_logico_literal = 73             /* logico_literal  */
+  YYSYMBOL_T_NUMERO = 6,                   /* T_NUMERO  */
+  YYSYMBOL_T_TEXTO = 7,                    /* T_TEXTO  */
+  YYSYMBOL_T_LOGICO = 8,                   /* T_LOGICO  */
+  YYSYMBOL_T_SE = 9,                       /* T_SE  */
+  YYSYMBOL_T_ENTAO = 10,                   /* T_ENTAO  */
+  YYSYMBOL_T_SENAO = 11,                   /* T_SENAO  */
+  YYSYMBOL_T_FIM_SE = 12,                  /* T_FIM_SE  */
+  YYSYMBOL_T_ENQUANTO = 13,                /* T_ENQUANTO  */
+  YYSYMBOL_T_FACA = 14,                    /* T_FACA  */
+  YYSYMBOL_T_FIM_ENQUANTO = 15,            /* T_FIM_ENQUANTO  */
+  YYSYMBOL_T_POR = 16,                     /* T_POR  */
+  YYSYMBOL_T_VEZES = 17,                   /* T_VEZES  */
+  YYSYMBOL_T_FIM_POR = 18,                 /* T_FIM_POR  */
+  YYSYMBOL_T_ESCREVA = 19,                 /* T_ESCREVA  */
+  YYSYMBOL_T_LEIA = 20,                    /* T_LEIA  */
+  YYSYMBOL_T_E = 21,                       /* T_E  */
+  YYSYMBOL_T_OU = 22,                      /* T_OU  */
+  YYSYMBOL_T_NAO = 23,                     /* T_NAO  */
+  YYSYMBOL_T_APONTE_LAPIS = 24,            /* T_APONTE_LAPIS  */
+  YYSYMBOL_T_USOS = 25,                    /* T_USOS  */
+  YYSYMBOL_T_COLON = 26,                   /* T_COLON  */
+  YYSYMBOL_T_LPAREN = 27,                  /* T_LPAREN  */
+  YYSYMBOL_T_RPAREN = 28,                  /* T_RPAREN  */
+  YYSYMBOL_T_COMMA = 29,                   /* T_COMMA  */
+  YYSYMBOL_T_EQ = 30,                      /* T_EQ  */
+  YYSYMBOL_T_NEQ = 31,                     /* T_NEQ  */
+  YYSYMBOL_T_LT = 32,                      /* T_LT  */
+  YYSYMBOL_T_LTE = 33,                     /* T_LTE  */
+  YYSYMBOL_T_GT = 34,                      /* T_GT  */
+  YYSYMBOL_T_GTE = 35,                     /* T_GTE  */
+  YYSYMBOL_T_PLUS = 36,                    /* T_PLUS  */
+  YYSYMBOL_T_MINUS = 37,                   /* T_MINUS  */
+  YYSYMBOL_T_MUL = 38,                     /* T_MUL  */
+  YYSYMBOL_T_DIV = 39,                     /* T_DIV  */
+  YYSYMBOL_T_IDENTIFICADOR = 40,           /* T_IDENTIFICADOR  */
+  YYSYMBOL_T_NUMERO_LITERAL = 41,          /* T_NUMERO_LITERAL  */
+  YYSYMBOL_T_TEXTO_LITERAL = 42,           /* T_TEXTO_LITERAL  */
+  YYSYMBOL_T_VERDADEIRO = 43,              /* T_VERDADEIRO  */
+  YYSYMBOL_T_FALSO = 44,                   /* T_FALSO  */
+  YYSYMBOL_YYACCEPT = 45,                  /* $accept  */
+  YYSYMBOL_programa_minimo = 46,           /* programa_minimo  */
+  YYSYMBOL_lista_de_tokens = 47,           /* lista_de_tokens  */
+  YYSYMBOL_qualquer_token_consumivel = 48  /* qualquer_token_consumivel  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -507,21 +485,21 @@ union yyalloc
 #endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  24
+#define YYFINAL  46
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   104
+#define YYLAST   43
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  43
+#define YYNTOKENS  45
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  31
+#define YYNNTS  4
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  65
+#define YYNRULES  46
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  119
+#define YYNSTATES  48
 
 /* YYMAXUTOK -- Last valid token kind.  */
-#define YYMAXUTOK   297
+#define YYMAXUTOK   299
 
 
 /* YYTRANSLATE(TOKEN-NUM) -- Symbol number corresponding to TOKEN-NUM
@@ -564,20 +542,18 @@ static const yytype_int8 yytranslate[] =
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
       15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
       25,    26,    27,    28,    29,    30,    31,    32,    33,    34,
-      35,    36,    37,    38,    39,    40,    41,    42
+      35,    36,    37,    38,    39,    40,    41,    42,    43,    44
 };
 
 #if YYDEBUG
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
-static const yytype_uint8 yyrline[] =
+static const yytype_int8 yyrline[] =
 {
-       0,    41,    41,    42,    45,    46,    50,    53,    54,    57,
-      58,    59,    59,    60,    60,    60,    62,    63,    64,    67,
-      69,    70,    71,    74,    85,    86,    87,    92,    99,   108,
-     109,   112,   113,   117,   117,   118,   119,   119,   120,   124,
-     125,   125,   125,   125,   126,   126,   126,   126,   126,   126,
-     126,   127,   127,   127,   128,   128,   128,   129,   129,   129,
-     129,   129,   130,   131,   132,   132
+       0,    36,    36,    37,    40,    41,    48,    48,    48,    48,
+      48,    48,    49,    49,    49,    49,    50,    50,    50,    51,
+      51,    51,    52,    52,    52,    52,    52,    53,    53,    54,
+      54,    54,    54,    55,    55,    55,    55,    55,    55,    56,
+      56,    56,    57,    58,    59,    60,    61
 };
 #endif
 
@@ -594,22 +570,14 @@ static const char *yysymbol_name (yysymbol_kind_t yysymbol) YY_ATTRIBUTE_UNUSED;
 static const char *const yytname[] =
 {
   "\"end of file\"", "error", "\"invalid token\"", "T_ARROW", "T_GUARDE",
-  "T_COMO", "T_SE", "T_ENTAO", "T_SENAO", "T_ENQUANTO", "T_FACA", "T_POR",
-  "T_VEZES", "T_ESCREVA", "T_LEIA", "T_E", "T_OU", "T_NAO", "T_COLON",
-  "T_LPAREN", "T_RPAREN", "T_COMMA", "T_EQ", "T_NEQ", "T_LT", "T_LTE",
-  "T_GT", "T_GTE", "T_PLUS", "T_MINUS", "T_MUL", "T_DIV", "T_NUMERO",
-  "T_TEXTO", "T_LOGICO", "T_FIM_SE", "T_FIM_ENQUANTO", "T_FIM_POR",
-  "T_IDENTIFICADOR", "T_NUMERO_LITERAL", "T_TEXTO_LITERAL", "T_VERDADEIRO",
-  "T_FALSO", "$accept", "programa", "instrucao_list_principal",
-  "instrucao", "instrucao_corpo", "declaracao_corpo",
-  "declaracao_variavel_corpo", "opt_inicializacao", "tipo",
-  "comando_corpo", "atribuicao_corpo", "estrutura_controle_corpo",
-  "condicional_corpo", "lista_senao", "loop_enquanto_corpo",
-  "loop_por_vezes_corpo", "bloco_comandos", "instrucao_list_bloco",
-  "comando_io_corpo", "comando_escrever_corpo", "expressao_list",
-  "comando_ler_corpo", "expressao", "expressao_logica",
-  "expressao_comparativa", "expressao_aritmetica", "termo", "fator",
-  "numero_literal", "texto_literal", "logico_literal", YY_NULLPTR
+  "T_COMO", "T_NUMERO", "T_TEXTO", "T_LOGICO", "T_SE", "T_ENTAO",
+  "T_SENAO", "T_FIM_SE", "T_ENQUANTO", "T_FACA", "T_FIM_ENQUANTO", "T_POR",
+  "T_VEZES", "T_FIM_POR", "T_ESCREVA", "T_LEIA", "T_E", "T_OU", "T_NAO",
+  "T_APONTE_LAPIS", "T_USOS", "T_COLON", "T_LPAREN", "T_RPAREN", "T_COMMA",
+  "T_EQ", "T_NEQ", "T_LT", "T_LTE", "T_GT", "T_GTE", "T_PLUS", "T_MINUS",
+  "T_MUL", "T_DIV", "T_IDENTIFICADOR", "T_NUMERO_LITERAL",
+  "T_TEXTO_LITERAL", "T_VERDADEIRO", "T_FALSO", "$accept",
+  "programa_minimo", "lista_de_tokens", "qualquer_token_consumivel", YY_NULLPTR
 };
 
 static const char *
@@ -619,7 +587,7 @@ yysymbol_name (yysymbol_kind_t yysymbol)
 }
 #endif
 
-#define YYPACT_NINF (-80)
+#define YYPACT_NINF (-4)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -633,18 +601,11 @@ yysymbol_name (yysymbol_kind_t yysymbol)
    STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-      11,     2,    19,    11,   -80,   -11,    17,    27,    -7,    29,
-      64,    57,   -80,   -80,   -80,   -80,   -80,   -80,   -80,   -80,
-     -80,   -80,   -80,   -80,   -80,   -80,    72,     3,     3,     3,
-     -80,   -80,   -80,   -80,   -80,    -3,    33,   -80,   -80,   -80,
-     -80,     3,    48,     3,    28,    -7,     8,   -80,    30,    56,
-      68,    23,    81,    -7,    -7,    -7,    -7,    59,   -80,    73,
-     -80,   -80,   -80,   -80,    74,   -80,    -7,    -7,    87,    -7,
-      -7,    -7,    -7,    -7,    -7,    85,   -80,    11,    33,    33,
-     -80,   -80,   -80,     3,   -80,     3,   -80,   -80,   -80,    11,
-      53,    53,    53,    53,    53,    53,    11,   -80,    60,    11,
-     -80,   -80,    93,    62,   -80,   -80,    92,    66,   -80,    15,
-     -80,    83,   -80,     3,    58,    96,    11,    93,   -80
+      -3,    -4,    -4,    -4,    -4,    -4,    -4,    -4,    -4,    -4,
+      -4,    -4,    -4,    -4,    -4,    -4,    -4,    -4,    -4,    -4,
+      -4,    -4,    -4,    -4,    -4,    -4,    -4,    -4,    -4,    -4,
+      -4,    -4,    -4,    -4,    -4,    -4,     3,    -4,    -4,    -4,
+      -4,    -4,    36,    -3,    -4,    -4,    -4,    -4
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -652,36 +613,23 @@ static const yytype_int8 yypact[] =
    means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       2,     0,     0,     3,     4,     0,     0,     0,     0,     0,
-       0,     0,     6,     7,     9,     8,    16,    17,    20,    21,
-      22,    18,    33,    34,     1,     5,     0,     0,     0,     0,
-      60,    62,    63,    64,    65,     0,    51,    54,    57,    58,
-      59,     0,     0,     0,     0,     0,     0,    40,    44,     0,
-       0,    39,     0,     0,     0,     0,     0,     0,    36,     0,
-      19,    13,    14,    15,    11,    43,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,    61,    29,    52,    53,
-      55,    56,    35,     0,    38,     0,    10,    41,    42,    29,
-      45,    46,    47,    48,    49,    50,    29,    31,     0,    30,
-      37,    12,    24,     0,    28,    32,     0,     0,    27,    29,
-      23,     0,    25,     0,     0,     0,    29,    24,    26
+       2,     6,     7,     8,     9,    10,    11,    12,    13,    14,
+      15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
+      25,    26,    27,    28,    29,    30,    31,    32,    33,    34,
+      35,    36,    37,    38,    39,    40,     0,    42,    43,    44,
+      45,    46,     0,     3,     4,    41,     1,     5
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -80,   -80,   -80,     0,   -80,   -80,   -80,   -80,   -80,   -80,
-     -80,   -80,   -80,   -13,   -80,   -80,   -79,   -80,   -80,   -80,
-     -80,   -80,   -36,   -26,   -16,    -4,    31,    34,   -80,   -80,
-     -80
+      -4,    -4,    -4,     0
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-       0,     2,     3,    97,    12,    13,    14,    86,    64,    15,
-      16,    17,    18,   107,    19,    20,    98,    99,    21,    22,
-      57,    23,    50,    51,    47,    48,    36,    37,    38,    39,
-      40
+       0,    42,    43,    44
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -689,74 +637,51 @@ static const yytype_int8 yydefgoto[] =
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-       4,    46,    49,    25,    35,    58,     5,    60,     6,    52,
-     102,     7,    29,     8,     1,     9,    10,   103,     1,    24,
-      45,   111,    29,    66,    67,    53,    54,    26,    68,    65,
-     112,    30,    31,    32,    33,    34,    27,   117,    66,    67,
-      11,    30,    31,    32,    33,    34,    28,   100,    41,   101,
-      87,    88,    69,    70,    71,    72,    73,    74,    53,    54,
-      61,    62,    63,    55,    56,    90,    91,    92,    93,    94,
-      95,    66,    67,    66,    67,    43,    75,    44,   115,    82,
-      83,    53,    54,    42,    78,    79,    59,   114,    76,    80,
-      81,    77,    85,    84,    89,    96,   106,   104,   108,   105,
-     109,   110,   113,   116,   118
+       1,     2,     3,     4,     5,     6,     7,     8,     9,    10,
+      11,    12,    13,    14,    15,    16,    17,    18,    19,    20,
+      21,    22,    23,    24,    25,    26,    27,    28,    29,    30,
+      31,    32,    33,    34,    35,    36,    46,    37,    38,    39,
+      40,    41,    45,    47
 };
 
 static const yytype_int8 yycheck[] =
 {
-       0,    27,    28,     3,     8,    41,     4,    43,     6,    12,
-      89,     9,    19,    11,     3,    13,    14,    96,     3,     0,
-      17,     6,    19,    15,    16,    28,    29,    38,    20,    45,
-     109,    38,    39,    40,    41,    42,    19,   116,    15,    16,
-      38,    38,    39,    40,    41,    42,    19,    83,    19,    85,
-      66,    67,    22,    23,    24,    25,    26,    27,    28,    29,
-      32,    33,    34,    30,    31,    69,    70,    71,    72,    73,
-      74,    15,    16,    15,    16,    18,    20,     5,    20,    20,
-      21,    28,    29,    19,    53,    54,    38,   113,    20,    55,
-      56,    10,    18,    20,     7,    10,     3,    37,    36,    99,
-       8,    35,    19,     7,   117
+       3,     4,     5,     6,     7,     8,     9,    10,    11,    12,
+      13,    14,    15,    16,    17,    18,    19,    20,    21,    22,
+      23,    24,    25,    26,    27,    28,    29,    30,    31,    32,
+      33,    34,    35,    36,    37,    38,     0,    40,    41,    42,
+      43,    44,    39,    43
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
    state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,     3,    44,    45,    46,     4,     6,     9,    11,    13,
-      14,    38,    47,    48,    49,    52,    53,    54,    55,    57,
-      58,    61,    62,    64,     0,    46,    38,    19,    19,    19,
-      38,    39,    40,    41,    42,    68,    69,    70,    71,    72,
-      73,    19,    19,    18,     5,    17,    66,    67,    68,    66,
-      65,    66,    12,    28,    29,    30,    31,    63,    65,    38,
-      65,    32,    33,    34,    51,    67,    15,    16,    20,    22,
-      23,    24,    25,    26,    27,    20,    20,    10,    69,    69,
-      70,    70,    20,    21,    20,    18,    50,    67,    67,     7,
-      68,    68,    68,    68,    68,    68,    10,    46,    59,    60,
-      65,    65,    59,    59,    37,    46,     3,    56,    36,     8,
-      35,     6,    59,    19,    66,    20,     7,    59,    56
+       0,     3,     4,     5,     6,     7,     8,     9,    10,    11,
+      12,    13,    14,    15,    16,    17,    18,    19,    20,    21,
+      22,    23,    24,    25,    26,    27,    28,    29,    30,    31,
+      32,    33,    34,    35,    36,    37,    38,    40,    41,    42,
+      43,    44,    46,    47,    48,    39,     0,    48
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    43,    44,    44,    45,    45,    46,    47,    47,    48,
-      49,    50,    50,    51,    51,    51,    52,    52,    52,    53,
-      54,    54,    54,    55,    56,    56,    56,    57,    58,    59,
-      59,    60,    60,    61,    61,    62,    63,    63,    64,    65,
-      66,    66,    66,    66,    67,    67,    67,    67,    67,    67,
-      67,    68,    68,    68,    69,    69,    69,    70,    70,    70,
-      70,    70,    71,    72,    73,    73
+       0,    45,    46,    46,    47,    47,    48,    48,    48,    48,
+      48,    48,    48,    48,    48,    48,    48,    48,    48,    48,
+      48,    48,    48,    48,    48,    48,    48,    48,    48,    48,
+      48,    48,    48,    48,    48,    48,    48,    48,    48,    48,
+      48,    48,    48,    48,    48,    48,    48
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr2[] =
 {
-       0,     2,     0,     1,     1,     2,     2,     1,     1,     1,
-       5,     0,     2,     1,     1,     1,     1,     1,     1,     3,
-       1,     1,     1,     8,     0,     3,     9,     7,     6,     0,
-       1,     1,     2,     1,     1,     4,     1,     3,     4,     1,
-       1,     3,     3,     2,     1,     3,     3,     3,     3,     3,
-       3,     1,     3,     3,     1,     3,     3,     1,     1,     1,
-       1,     3,     1,     1,     1,     1
+       0,     2,     0,     1,     1,     2,     1,     1,     1,     1,
+       1,     1,     1,     1,     1,     1,     1,     1,     1,     1,
+       1,     1,     1,     1,     1,     1,     1,     1,     1,     1,
+       1,     1,     1,     1,     1,     1,     1,     1,     1,     1,
+       1,     2,     1,     1,     1,     1,     1
 };
 
 
@@ -1219,266 +1144,38 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-  case 7: /* instrucao_corpo: declaracao_corpo  */
-#line 53 "cadernoscript.y"
-                                      { printf("Parsed: declaracao (Line %d)\n", yylineno); }
-#line 1226 "cadernoscript.tab.c"
+  case 42: /* qualquer_token_consumivel: T_IDENTIFICADOR  */
+#line 57 "src/cadernoscript.y"
+                       { if ((yyvsp[0].sval)) free((yyvsp[0].sval)); }
+#line 1151 "build/cadernoscript.tab.c"
     break;
 
-  case 8: /* instrucao_corpo: comando_corpo  */
-#line 54 "cadernoscript.y"
-                                      { printf("Parsed: comando (Line %d)\n", yylineno); }
-#line 1232 "cadernoscript.tab.c"
+  case 43: /* qualquer_token_consumivel: T_NUMERO_LITERAL  */
+#line 58 "src/cadernoscript.y"
+                     { if ((yyvsp[0].sval)) free((yyvsp[0].sval)); }
+#line 1157 "build/cadernoscript.tab.c"
     break;
 
-  case 9: /* declaracao_corpo: declaracao_variavel_corpo  */
-#line 57 "cadernoscript.y"
-                                            { printf("Parsed: declaracao_variavel (Line %d)\n", yylineno); }
-#line 1238 "cadernoscript.tab.c"
+  case 44: /* qualquer_token_consumivel: T_TEXTO_LITERAL  */
+#line 59 "src/cadernoscript.y"
+                     { if ((yyvsp[0].sval)) free((yyvsp[0].sval)); }
+#line 1163 "build/cadernoscript.tab.c"
     break;
 
-  case 10: /* declaracao_variavel_corpo: T_GUARDE T_IDENTIFICADOR T_COMO tipo opt_inicializacao  */
-#line 58 "cadernoscript.y"
-                                                                                  { printf("  Declaring variable %s as %s (Line %d)\n", (yyvsp[-3].sval), (yyvsp[-1].sval), yylineno); free((yyvsp[-3].sval)); free((yyvsp[-1].sval)); }
-#line 1244 "cadernoscript.tab.c"
+  case 45: /* qualquer_token_consumivel: T_VERDADEIRO  */
+#line 60 "src/cadernoscript.y"
+                     { if ((yyvsp[0].sval)) free((yyvsp[0].sval)); }
+#line 1169 "build/cadernoscript.tab.c"
     break;
 
-  case 12: /* opt_inicializacao: T_COLON expressao  */
-#line 59 "cadernoscript.y"
-                                                   { printf("    With initialization (Line %d)\n", yylineno); }
-#line 1250 "cadernoscript.tab.c"
-    break;
-
-  case 13: /* tipo: T_NUMERO  */
-#line 60 "cadernoscript.y"
-               { (yyval.sval) = strdup("numero"); }
-#line 1256 "cadernoscript.tab.c"
-    break;
-
-  case 14: /* tipo: T_TEXTO  */
-#line 60 "cadernoscript.y"
-                                                    { (yyval.sval) = strdup("texto"); }
-#line 1262 "cadernoscript.tab.c"
-    break;
-
-  case 15: /* tipo: T_LOGICO  */
-#line 60 "cadernoscript.y"
-                                                                                         { (yyval.sval) = strdup("logico"); }
-#line 1268 "cadernoscript.tab.c"
-    break;
-
-  case 16: /* comando_corpo: atribuicao_corpo  */
-#line 62 "cadernoscript.y"
-                                { printf("Parsed: atribuicao (Line %d)\n", yylineno); }
-#line 1274 "cadernoscript.tab.c"
-    break;
-
-  case 17: /* comando_corpo: estrutura_controle_corpo  */
-#line 63 "cadernoscript.y"
-                                        { printf("Parsed: estrutura_controle (Line %d)\n", yylineno); }
-#line 1280 "cadernoscript.tab.c"
-    break;
-
-  case 18: /* comando_corpo: comando_io_corpo  */
-#line 64 "cadernoscript.y"
-                                { printf("Parsed: comando_io (Line %d)\n", yylineno); }
-#line 1286 "cadernoscript.tab.c"
-    break;
-
-  case 19: /* atribuicao_corpo: T_IDENTIFICADOR T_COLON expressao  */
-#line 67 "cadernoscript.y"
-                                                    { printf("  Assigning to variable %s (Line %d)\n", (yyvsp[-2].sval), yylineno); free((yyvsp[-2].sval)); }
-#line 1292 "cadernoscript.tab.c"
-    break;
-
-  case 23: /* condicional_corpo: T_SE T_LPAREN expressao_logica T_RPAREN T_ENTAO bloco_comandos lista_senao T_FIM_SE  */
-#line 79 "cadernoscript.y"
-                 { printf("Parsed: condicional (se..entao..) (Line %d)\n", yylineno); }
-#line 1298 "cadernoscript.tab.c"
-    break;
-
-  case 24: /* lista_senao: %empty  */
-#line 85 "cadernoscript.y"
-                         { printf("    No senao block (Line %d)\n", yylineno); }
-#line 1304 "cadernoscript.tab.c"
-    break;
-
-  case 25: /* lista_senao: T_ARROW T_SENAO bloco_comandos  */
-#line 86 "cadernoscript.y"
-                                            { printf("    Senao block (Line %d)\n", yylineno); }
-#line 1310 "cadernoscript.tab.c"
-    break;
-
-  case 26: /* lista_senao: T_ARROW T_SENAO T_SE T_LPAREN expressao_logica T_RPAREN T_ENTAO bloco_comandos lista_senao  */
-#line 88 "cadernoscript.y"
-             { printf("    Senao se block (Line %d)\n", yylineno); }
-#line 1316 "cadernoscript.tab.c"
-    break;
-
-  case 27: /* loop_enquanto_corpo: T_ENQUANTO T_LPAREN expressao_logica T_RPAREN T_FACA bloco_comandos T_FIM_ENQUANTO  */
-#line 96 "cadernoscript.y"
-                   { printf("Parsed: loop_enquanto (Line %d)\n", yylineno); }
-#line 1322 "cadernoscript.tab.c"
-    break;
-
-  case 28: /* loop_por_vezes_corpo: T_POR expressao_aritmetica T_VEZES T_FACA bloco_comandos T_FIM_POR  */
-#line 103 "cadernoscript.y"
-                    { printf("Parsed: loop_por_vezes (Line %d)\n", yylineno); }
-#line 1328 "cadernoscript.tab.c"
-    break;
-
-  case 35: /* comando_escrever_corpo: T_ESCREVA T_LPAREN expressao_list T_RPAREN  */
-#line 118 "cadernoscript.y"
-                                                                   { printf("Parsed: comando_escrever (Line %d)\n", yylineno); }
-#line 1334 "cadernoscript.tab.c"
-    break;
-
-  case 38: /* comando_ler_corpo: T_LEIA T_LPAREN T_IDENTIFICADOR T_RPAREN  */
-#line 120 "cadernoscript.y"
-                                                            { printf("Parsed: comando_ler (%s) (Line %d)\n", (yyvsp[-1].sval), yylineno); free((yyvsp[-1].sval)); }
-#line 1340 "cadernoscript.tab.c"
-    break;
-
-  case 39: /* expressao: expressao_logica  */
-#line 124 "cadernoscript.y"
-                            { printf("  Parsed: expressao (Line %d)\n", yylineno); }
-#line 1346 "cadernoscript.tab.c"
-    break;
-
-  case 41: /* expressao_logica: expressao_logica T_E expressao_comparativa  */
-#line 125 "cadernoscript.y"
-                                                                                     { printf("    Op: E (Line %d)\n", yylineno); }
-#line 1352 "cadernoscript.tab.c"
-    break;
-
-  case 42: /* expressao_logica: expressao_logica T_OU expressao_comparativa  */
-#line 125 "cadernoscript.y"
-                                                                                                                                                                                  { printf("    Op: OU (Line %d)\n", yylineno); }
-#line 1358 "cadernoscript.tab.c"
-    break;
-
-  case 43: /* expressao_logica: T_NAO expressao_comparativa  */
-#line 125 "cadernoscript.y"
-                                                                                                                                                                                                                                                                { printf("    Op: NAO (Line %d)\n", yylineno); }
-#line 1364 "cadernoscript.tab.c"
-    break;
-
-  case 45: /* expressao_comparativa: expressao_aritmetica T_EQ expressao_aritmetica  */
-#line 126 "cadernoscript.y"
-                                                                                             { printf("    Op: = (Line %d)\n", yylineno); }
-#line 1370 "cadernoscript.tab.c"
-    break;
-
-  case 46: /* expressao_comparativa: expressao_aritmetica T_NEQ expressao_aritmetica  */
-#line 126 "cadernoscript.y"
-                                                                                                                                                                                              { printf("    Op: != (Line %d)\n", yylineno); }
-#line 1376 "cadernoscript.tab.c"
-    break;
-
-  case 47: /* expressao_comparativa: expressao_aritmetica T_LT expressao_aritmetica  */
-#line 126 "cadernoscript.y"
-                                                                                                                                                                                                                                                                                               { printf("    Op: < (Line %d)\n", yylineno); }
-#line 1382 "cadernoscript.tab.c"
-    break;
-
-  case 48: /* expressao_comparativa: expressao_aritmetica T_LTE expressao_aritmetica  */
-#line 126 "cadernoscript.y"
-                                                                                                                                                                                                                                                                                                                                                                                                { printf("    Op: <= (Line %d)\n", yylineno); }
-#line 1388 "cadernoscript.tab.c"
-    break;
-
-  case 49: /* expressao_comparativa: expressao_aritmetica T_GT expressao_aritmetica  */
-#line 126 "cadernoscript.y"
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 { printf("    Op: > (Line %d)\n", yylineno); }
-#line 1394 "cadernoscript.tab.c"
-    break;
-
-  case 50: /* expressao_comparativa: expressao_aritmetica T_GTE expressao_aritmetica  */
-#line 126 "cadernoscript.y"
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  { printf("    Op: >= (Line %d)\n", yylineno); }
-#line 1400 "cadernoscript.tab.c"
-    break;
-
-  case 52: /* expressao_aritmetica: expressao_aritmetica T_PLUS termo  */
-#line 127 "cadernoscript.y"
-                                                                { printf("    Op: + (Line %d)\n", yylineno); }
-#line 1406 "cadernoscript.tab.c"
-    break;
-
-  case 53: /* expressao_aritmetica: expressao_aritmetica T_MINUS termo  */
-#line 127 "cadernoscript.y"
-                                                                                                                                                    { printf("    Op: - (Line %d)\n", yylineno); }
-#line 1412 "cadernoscript.tab.c"
-    break;
-
-  case 55: /* termo: termo T_MUL fator  */
-#line 128 "cadernoscript.y"
-                                 { printf("    Op: * (Line %d)\n", yylineno); }
-#line 1418 "cadernoscript.tab.c"
-    break;
-
-  case 56: /* termo: termo T_DIV fator  */
-#line 128 "cadernoscript.y"
-                                                                                                    { printf("    Op: / (Line %d)\n", yylineno); }
-#line 1424 "cadernoscript.tab.c"
-    break;
-
-  case 57: /* fator: numero_literal  */
-#line 129 "cadernoscript.y"
-                      { printf("    Factor: Number (%s) (Line %d)\n", (yyvsp[0].sval), yylineno); free((yyvsp[0].sval)); }
-#line 1430 "cadernoscript.tab.c"
-    break;
-
-  case 58: /* fator: texto_literal  */
-#line 129 "cadernoscript.y"
-                                                                                                                 { printf("    Factor: Text (%s) (Line %d)\n", (yyvsp[0].sval), yylineno); free((yyvsp[0].sval)); }
-#line 1436 "cadernoscript.tab.c"
-    break;
-
-  case 59: /* fator: logico_literal  */
-#line 129 "cadernoscript.y"
-                                                                                                                                                                                                           { printf("    Factor: Logical (%s) (Line %d)\n", (yyvsp[0].sval), yylineno); free((yyvsp[0].sval)); }
-#line 1442 "cadernoscript.tab.c"
-    break;
-
-  case 60: /* fator: T_IDENTIFICADOR  */
-#line 129 "cadernoscript.y"
-                                                                                                                                                                                                                                                                                                         { printf("    Factor: Identifier (%s) (Line %d)\n", (yyvsp[0].sval), yylineno); free((yyvsp[0].sval)); }
-#line 1448 "cadernoscript.tab.c"
-    break;
-
-  case 61: /* fator: T_LPAREN expressao T_RPAREN  */
-#line 129 "cadernoscript.y"
-                                                                                                                                                                                                                                                                                                                                                                                                                      { printf("    Factor: (expression) (Line %d)\n", yylineno); }
-#line 1454 "cadernoscript.tab.c"
-    break;
-
-  case 62: /* numero_literal: T_NUMERO_LITERAL  */
-#line 130 "cadernoscript.y"
-                                 { (yyval.sval) = (yyvsp[0].sval); }
-#line 1460 "cadernoscript.tab.c"
-    break;
-
-  case 63: /* texto_literal: T_TEXTO_LITERAL  */
-#line 131 "cadernoscript.y"
-                                 { (yyval.sval) = (yyvsp[0].sval); }
-#line 1466 "cadernoscript.tab.c"
-    break;
-
-  case 64: /* logico_literal: T_VERDADEIRO  */
-#line 132 "cadernoscript.y"
-                                 { (yyval.sval) = (yyvsp[0].sval); }
-#line 1472 "cadernoscript.tab.c"
-    break;
-
-  case 65: /* logico_literal: T_FALSO  */
-#line 132 "cadernoscript.y"
-                                                                 { (yyval.sval) = (yyvsp[0].sval); }
-#line 1478 "cadernoscript.tab.c"
+  case 46: /* qualquer_token_consumivel: T_FALSO  */
+#line 61 "src/cadernoscript.y"
+                     { if ((yyvsp[0].sval)) free((yyvsp[0].sval)); }
+#line 1175 "build/cadernoscript.tab.c"
     break;
 
 
-#line 1482 "cadernoscript.tab.c"
+#line 1179 "build/cadernoscript.tab.c"
 
       default: break;
     }
@@ -1671,8 +1368,24 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 135 "cadernoscript.y"
+#line 64 "src/cadernoscript.y"
 
-/* Standard C code (yyerror, main) */
-void yyerror(const char *s) { fprintf(stderr, "Erro na linha %d: ", yylineno); if (strncmp(s, "Caracter inesperado:", 20) == 0) { fprintf(stderr, "%s\n", s); } else { fprintf(stderr, "Erro de Sintaxe"); if (yytext && strlen(yytext) > 0) { fprintf(stderr, " proximo a '%s'", yytext); } else { fprintf(stderr, " (%s)", s); } fprintf(stderr, "\n"); } exit(1); }
-int main(int argc, char **argv) { if (argc > 1) { yyin = fopen(argv[1], "r"); if (!yyin) { perror(argv[1]); return 1; } } else { printf("Lendo da entrada padrao...\n"); yyin = stdin; } if (yyparse() == 0) { printf("Analise Sintatica concluida com sucesso!\n"); } else { printf("Analise Sintatica falhou.\n"); } if (yyin != stdin) { fclose(yyin); } return 0; }
+void yyerror(const char *s) {
+    syntax_error_occurred = 1; // <<< AQUI: Seta a flag global de erro
+    fprintf(stderr, "Erro na linha %d: ", yylineno);
+
+    // A lógica original de yyerror para distinguir tipos de erro pode ser mantida.
+    // O "Caracter inesperado" geralmente vem de uma regra de erro no Flex,
+    // "Erro Lexico" também. O default do Bison é "syntax error".
+    if (strncmp(s, "Caracter inesperado:", 20) == 0 ||
+        strncmp(s, "Erro Lexico:", 12) == 0 ||
+        strcmp(s, "syntax error") != 0 ) { // Se a mensagem não é o "syntax error" genérico
+        fprintf(stderr, "%s", s); // Imprime a mensagem como está (pode já ter yytext)
+    } else { // Para o "syntax error" genérico do Bison
+        fprintf(stderr, "erro de sintaxe"); // Mensagem mais amigável
+        if (yytext && strlen(yytext) > 0 && strcmp(yytext, "\n") != 0 && strcmp(yytext, "") != 0) {
+            fprintf(stderr, " proximo a '%s'", yytext);
+        }
+    }
+    fprintf(stderr, "\n");
+}

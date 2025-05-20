@@ -1,8 +1,0 @@
-# Exemplo de programa CadernoScript
--> guarde i como numero : 1
--> guarde limite como numero : 5
-
--> enquanto (i <= limite) faca
-    -> escreva("Iteracao: ", i)
-    -> i : i + 1
-fim_enquanto
