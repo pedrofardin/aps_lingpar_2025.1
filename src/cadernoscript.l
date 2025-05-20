@@ -62,8 +62,6 @@ COMENTARIO      #.*
 {COMENTARIO}    { /* Ignora */ }
 [ \t\r]+        { /* Ignora */ }
 \n              { /* Apenas conta a linha (yylineno é incrementado automaticamente por Flex) */ }
-                /* Se você precisar que o Bison veja \n como um token, retorne um token aqui. */
-                /* Caso contrário, apenas ignorar é bom para a validação da sintaxe dos comandos. */
 
  /* Erro Léxico */
 .               { 

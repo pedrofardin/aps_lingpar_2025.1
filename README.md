@@ -130,10 +130,26 @@ Este projeto utiliza `make` para gerenciar a compilação do validador.
 
 4.  **Executar um exemplo completo (validador + interpretador):**
     Este comando passa o script pelo validador e, se a sintaxe estiver correta, envia o script para o interpretador Python.
+
     ```bash
     make run_example
     ```
-    (Atualmente configurado para usar `examples/meu_programa.caderno` e `interpreter/cadernoscript_interpreter.py`)
+    Usa: `examples/meu_programa.caderno`
+
+5. **Executar os testes mínimos da linguagem:**
+    Roda um conjunto compacto de testes cobrindo declaração, atribuição, controle de fluxo, lápis e operadores.
+
+    ```bash
+    make run_minimos
+    ```
+    Usa: `examples/testes_minimos.caderno`
+
+6. **Executar todos os exemplos disponíveis:**
+    Executa tanto o exemplo principal quanto os testes mínimos em sequência.
+
+    ```bash
+    make run_all_examples
+    ```
 
 **Executando manualmente:**
 

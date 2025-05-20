@@ -70,20 +70,17 @@
 #line 1 "src/cadernoscript.y"
 
 #include <stdio.h>
-#include <stdlib.h> // Para free
-#include <string.h> // Para strncmp em yyerror
+#include <stdlib.h> 
+#include <string.h> 
 
 extern int yylex();
 extern int yylineno;
-extern char *yytext; // yytext é do Flex
+extern char *yytext; 
 extern FILE *yyin;
-
-// Declaração da flag global definida em main.c
 extern int syntax_error_occurred;
-
 void yyerror(const char *s);
 
-#line 87 "build/cadernoscript.tab.c"
+#line 84 "build/cadernoscript.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -494,7 +491,7 @@ union yyalloc
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  4
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  46
+#define YYNRULES  47
 /* YYNSTATES -- Number of states.  */
 #define YYNSTATES  48
 
@@ -549,11 +546,11 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    36,    36,    37,    40,    41,    48,    48,    48,    48,
-      48,    48,    49,    49,    49,    49,    50,    50,    50,    51,
-      51,    51,    52,    52,    52,    52,    52,    53,    53,    54,
-      54,    54,    54,    55,    55,    55,    55,    55,    55,    56,
-      56,    56,    57,    58,    59,    60,    61
+       0,    29,    29,    30,    33,    34,    38,    38,    38,    38,
+      38,    38,    39,    39,    39,    39,    40,    40,    40,    41,
+      41,    41,    42,    42,    42,    42,    42,    43,    43,    44,
+      44,    44,    44,    45,    45,    45,    45,    45,    45,    46,
+      46,    46,    46,    47,    48,    49,    50,    51
 };
 #endif
 
@@ -604,8 +601,8 @@ static const yytype_int8 yypact[] =
       -3,    -4,    -4,    -4,    -4,    -4,    -4,    -4,    -4,    -4,
       -4,    -4,    -4,    -4,    -4,    -4,    -4,    -4,    -4,    -4,
       -4,    -4,    -4,    -4,    -4,    -4,    -4,    -4,    -4,    -4,
-      -4,    -4,    -4,    -4,    -4,    -4,     3,    -4,    -4,    -4,
-      -4,    -4,    36,    -3,    -4,    -4,    -4,    -4
+      -4,    -4,    -4,    -4,    -4,    -4,    -4,    -4,    -4,    -4,
+      -4,    -4,    -4,    42,    -3,    -4,    -4,    -4
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -616,20 +613,20 @@ static const yytype_int8 yydefact[] =
        2,     6,     7,     8,     9,    10,    11,    12,    13,    14,
       15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
       25,    26,    27,    28,    29,    30,    31,    32,    33,    34,
-      35,    36,    37,    38,    39,    40,     0,    42,    43,    44,
-      45,    46,     0,     3,     4,    41,     1,     5
+      35,    36,    37,    38,    39,    40,    41,    42,    43,    44,
+      45,    46,    47,     0,     3,     4,     1,     5
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-      -4,    -4,    -4,     0
+      -4,    -4,    -4,    -1
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-       0,    42,    43,    44
+       0,    43,    44,    45
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -640,8 +637,8 @@ static const yytype_int8 yytable[] =
        1,     2,     3,     4,     5,     6,     7,     8,     9,    10,
       11,    12,    13,    14,    15,    16,    17,    18,    19,    20,
       21,    22,    23,    24,    25,    26,    27,    28,    29,    30,
-      31,    32,    33,    34,    35,    36,    46,    37,    38,    39,
-      40,    41,    45,    47
+      31,    32,    33,    34,    35,    36,    37,    38,    39,    40,
+      41,    42,    46,    47
 };
 
 static const yytype_int8 yycheck[] =
@@ -649,8 +646,8 @@ static const yytype_int8 yycheck[] =
        3,     4,     5,     6,     7,     8,     9,    10,    11,    12,
       13,    14,    15,    16,    17,    18,    19,    20,    21,    22,
       23,    24,    25,    26,    27,    28,    29,    30,    31,    32,
-      33,    34,    35,    36,    37,    38,     0,    40,    41,    42,
-      43,    44,    39,    43
+      33,    34,    35,    36,    37,    38,    39,    40,    41,    42,
+      43,    44,     0,    44
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
@@ -660,8 +657,8 @@ static const yytype_int8 yystos[] =
        0,     3,     4,     5,     6,     7,     8,     9,    10,    11,
       12,    13,    14,    15,    16,    17,    18,    19,    20,    21,
       22,    23,    24,    25,    26,    27,    28,    29,    30,    31,
-      32,    33,    34,    35,    36,    37,    38,    40,    41,    42,
-      43,    44,    46,    47,    48,    39,     0,    48
+      32,    33,    34,    35,    36,    37,    38,    39,    40,    41,
+      42,    43,    44,    46,    47,    48,     0,    48
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
@@ -671,7 +668,7 @@ static const yytype_int8 yyr1[] =
       48,    48,    48,    48,    48,    48,    48,    48,    48,    48,
       48,    48,    48,    48,    48,    48,    48,    48,    48,    48,
       48,    48,    48,    48,    48,    48,    48,    48,    48,    48,
-      48,    48,    48,    48,    48,    48,    48
+      48,    48,    48,    48,    48,    48,    48,    48
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
@@ -681,7 +678,7 @@ static const yytype_int8 yyr2[] =
        1,     1,     1,     1,     1,     1,     1,     1,     1,     1,
        1,     1,     1,     1,     1,     1,     1,     1,     1,     1,
        1,     1,     1,     1,     1,     1,     1,     1,     1,     1,
-       1,     2,     1,     1,     1,     1,     1
+       1,     1,     1,     1,     1,     1,     1,     1
 };
 
 
@@ -1144,38 +1141,38 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-  case 42: /* qualquer_token_consumivel: T_IDENTIFICADOR  */
-#line 57 "src/cadernoscript.y"
+  case 43: /* qualquer_token_consumivel: T_IDENTIFICADOR  */
+#line 47 "src/cadernoscript.y"
                        { if ((yyvsp[0].sval)) free((yyvsp[0].sval)); }
-#line 1151 "build/cadernoscript.tab.c"
+#line 1148 "build/cadernoscript.tab.c"
     break;
 
-  case 43: /* qualquer_token_consumivel: T_NUMERO_LITERAL  */
-#line 58 "src/cadernoscript.y"
+  case 44: /* qualquer_token_consumivel: T_NUMERO_LITERAL  */
+#line 48 "src/cadernoscript.y"
                      { if ((yyvsp[0].sval)) free((yyvsp[0].sval)); }
-#line 1157 "build/cadernoscript.tab.c"
+#line 1154 "build/cadernoscript.tab.c"
     break;
 
-  case 44: /* qualquer_token_consumivel: T_TEXTO_LITERAL  */
-#line 59 "src/cadernoscript.y"
+  case 45: /* qualquer_token_consumivel: T_TEXTO_LITERAL  */
+#line 49 "src/cadernoscript.y"
                      { if ((yyvsp[0].sval)) free((yyvsp[0].sval)); }
-#line 1163 "build/cadernoscript.tab.c"
+#line 1160 "build/cadernoscript.tab.c"
     break;
 
-  case 45: /* qualquer_token_consumivel: T_VERDADEIRO  */
-#line 60 "src/cadernoscript.y"
+  case 46: /* qualquer_token_consumivel: T_VERDADEIRO  */
+#line 50 "src/cadernoscript.y"
                      { if ((yyvsp[0].sval)) free((yyvsp[0].sval)); }
-#line 1169 "build/cadernoscript.tab.c"
+#line 1166 "build/cadernoscript.tab.c"
     break;
 
-  case 46: /* qualquer_token_consumivel: T_FALSO  */
-#line 61 "src/cadernoscript.y"
+  case 47: /* qualquer_token_consumivel: T_FALSO  */
+#line 51 "src/cadernoscript.y"
                      { if ((yyvsp[0].sval)) free((yyvsp[0].sval)); }
-#line 1175 "build/cadernoscript.tab.c"
+#line 1172 "build/cadernoscript.tab.c"
     break;
 
 
-#line 1179 "build/cadernoscript.tab.c"
+#line 1176 "build/cadernoscript.tab.c"
 
       default: break;
     }
@@ -1368,21 +1365,17 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 64 "src/cadernoscript.y"
+#line 54 "src/cadernoscript.y"
 
 void yyerror(const char *s) {
-    syntax_error_occurred = 1; // <<< AQUI: Seta a flag global de erro
+    syntax_error_occurred = 1; 
     fprintf(stderr, "Erro na linha %d: ", yylineno);
-
-    // A lógica original de yyerror para distinguir tipos de erro pode ser mantida.
-    // O "Caracter inesperado" geralmente vem de uma regra de erro no Flex,
-    // "Erro Lexico" também. O default do Bison é "syntax error".
     if (strncmp(s, "Caracter inesperado:", 20) == 0 ||
         strncmp(s, "Erro Lexico:", 12) == 0 ||
-        strcmp(s, "syntax error") != 0 ) { // Se a mensagem não é o "syntax error" genérico
-        fprintf(stderr, "%s", s); // Imprime a mensagem como está (pode já ter yytext)
-    } else { // Para o "syntax error" genérico do Bison
-        fprintf(stderr, "erro de sintaxe"); // Mensagem mais amigável
+        strcmp(s, "syntax error") != 0 ) { 
+        fprintf(stderr, "%s", s); 
+    } else { 
+        fprintf(stderr, "erro de sintaxe"); 
         if (yytext && strlen(yytext) > 0 && strcmp(yytext, "\n") != 0 && strcmp(yytext, "") != 0) {
             fprintf(stderr, " proximo a '%s'", yytext);
         }

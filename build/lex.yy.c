@@ -1079,12 +1079,10 @@ YY_RULE_SETUP
 #line 65 "src/cadernoscript.l"
 { /* Apenas conta a linha (yylineno é incrementado automaticamente por Flex) */ }
 	YY_BREAK
-/* Se você precisar que o Bison veja \n como um token, retorne um token aqui. */
-/* Caso contrário, apenas ignorar é bom para a validação da sintaxe dos comandos. */
 /* Erro Léxico */
 case 46:
 YY_RULE_SETUP
-#line 70 "src/cadernoscript.l"
+#line 68 "src/cadernoscript.l"
 { 
                   char error_msg[100];
                   sprintf(error_msg, "Erro Lexico: Caracter invalido '%c'", yytext[0]);
@@ -1096,10 +1094,10 @@ YY_RULE_SETUP
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 78 "src/cadernoscript.l"
+#line 76 "src/cadernoscript.l"
 ECHO;
 	YY_BREAK
-#line 1103 "build/lex.yy.c"
+#line 1101 "build/lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2116,5 +2114,5 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 78 "src/cadernoscript.l"
+#line 76 "src/cadernoscript.l"
 
