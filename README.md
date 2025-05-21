@@ -79,6 +79,7 @@ LITERAL_NUMERO ::= digito { digito } [ "." digito { digito } ]
 LITERAL_TEXTO ::= "\"" { QUALQUER_CARACTERE_EXCETO_ASPAS_E_NOVA_LINHA } "\""
 LITERAL_LOGICO ::= "verdadeiro" | "falso"
 operador_comparacao ::= "=" | "!=" | "<" | "<=" | ">" | ">="
+```
 
 *(Para uma análise mais aprofundada da gramática, incluindo as definições de `letra` e `digito` (implícitas nas regras de tokens do Flex), consulte os arquivos `src/cadernoscript.l` para a definição de tokens e `src/cadernoscript.y` para a estrutura gramatical.)*
 
