@@ -101,35 +101,63 @@ class LeiaCS(NodeCS):
     def Evaluate(self, symbol_table: SymbolTableCS):
         identifier_name = self.children[0].value
         _, declared_cs_type = symbol_table.getter(identifier_name)
+        user_input_value = None # Para armazenar o que foi digitado pelo usuário
+
+        # Tenta abrir o terminal de controle para input, se não, usa stdin (que pode falhar em pipeline)
+        # Isso é mais robusto para quando o script Python está recebendo seu código fonte via stdin.
         try:
-            user_input = input()
-            if declared_cs_type == 'numero': value_to_set = int(user_input)
+            # Em sistemas Unix-like, /dev/tty é o terminal de controle do processo.
+            # Em Windows, isso não funcionará diretamente.
+            if os.name == 'posix': # 'posix' para Linux, macOS, etc.
+                with open('/dev/tty') as tty:
+                    user_input_value = tty.readline().strip() # Lê uma linha do terminal
+            else: # Fallback para Windows ou outros sistemas (pode ainda ter o problema de EOF)
+                user_input_value = input()
+        except Exception as term_err:
+            # Se falhar ao abrir /dev/tty (ex: não é um terminal interativo), tenta input() padrão
+            # print(f"DEBUG: Falha ao abrir /dev/tty ({term_err}), usando input() padrão.", file=sys.stderr)
+            try:
+                user_input_value = input()
+            except EOFError: # Captura especificamente o EOFError
+                 raise EOFError(f"Fim de arquivo inesperado ao tentar ler entrada para '{identifier_name}' na linha {self.lineno}. O programa esperava uma entrada do usuario.")
+            except Exception as e: # Captura outras exceções do input()
+                 raise Exception(f"Erro ao ler entrada para '{identifier_name}' na linha {self.lineno}: {e}")
+
+
+        if user_input_value is None: # Se não conseguiu ler nada
+            raise RuntimeError(f"Nao foi possivel ler a entrada do usuario para '{identifier_name}' na linha {self.lineno}.")
+
+        try:
+            if declared_cs_type == 'numero': 
+                value_to_set = int(user_input_value)
             elif declared_cs_type == 'logico':
-                if user_input.lower() == 'verdadeiro': value_to_set = True
-                elif user_input.lower() == 'falso': value_to_set = False
+                if user_input_value.lower() == 'verdadeiro': value_to_set = True
+                elif user_input_value.lower() == 'falso': value_to_set = False
                 else: raise ValueError("Entrada para logico deve ser 'verdadeiro' ou 'falso'")
-            elif declared_cs_type == 'texto': value_to_set = user_input
-            else: raise TypeError(f"Tipo de variavel desconhecido '{declared_cs_type}' para leia")
+            elif declared_cs_type == 'texto': 
+                value_to_set = user_input_value
+            else: 
+                raise TypeError(f"Tipo de variavel desconhecido '{declared_cs_type}' para leia")
             symbol_table.setter(identifier_name, value_to_set)
         except ValueError as e:
-            raise TypeError(f"Entrada invalida '{user_input}' para variavel '{identifier_name}' do tipo {declared_cs_type} na linha {self.lineno}. Detalhe: {e}")
-        except Exception as e:
-            raise Exception(f"{e} (leia na linha {self.lineno})")
+            raise TypeError(f"Entrada invalida '{user_input_value}' para variavel '{identifier_name}' do tipo {declared_cs_type} na linha {self.lineno}. Detalhe: {e}")
+        except Exception as e: # Captura erros de setter ou outros
+            raise Exception(f"{e} (atribuicao do leia na linha {self.lineno})")
 
 
 class AponteLapisCS(NodeCS):
     def Evaluate(self, symbol_table: SymbolTableCS):
-        global ponta_do_lapis_restante, USOS_PADRAO_LAPIS
-        if self.children:
-            usos_tuple = self.children[0].Evaluate(symbol_table)
-            usos_val, usos_type = usos_tuple
-            if usos_type != 'numero':
-                raise TypeError(f"'aponte_lapis por N usos' requer N do tipo numero (linha {self.lineno}), obteve {usos_type}")
-            if usos_val < 0:
-                 raise ValueError(f"Numero de usos para 'aponte_lapis' nao pode ser negativo (linha {self.lineno}), obteve {usos_val}")
-            ponta_do_lapis_restante = usos_val
-        else:
-            ponta_do_lapis_restante = USOS_PADRAO_LAPIS
+        global ponta_do_lapis_restante 
+        
+        usos_tuple = self.children[0].Evaluate(symbol_table)
+        usos_val, usos_type = usos_tuple
+        
+        if usos_type != 'numero':
+            raise TypeError(f"'aponte_lapis por N usos' requer N do tipo numero (linha {self.lineno}), obteve {usos_type}")
+        if usos_val < 0:
+            raise ValueError(f"Numero de usos para 'aponte_lapis' nao pode ser negativo (linha {self.lineno}), obteve {usos_val}")
+        
+        ponta_do_lapis_restante = usos_val
         print(f"INFO (Linha {self.lineno}): Lapis apontado! {ponta_do_lapis_restante} usos restantes.", file=sys.stderr)
 
 
@@ -508,12 +536,12 @@ class ParserCS:
 
     def parse_aponte_lapis(self, lineno) -> AponteLapisCS:
         self.eat("APONTE_LAPIS")
-        usos_expr_node = None
-        if self.current_token.type == "POR":
-            self.eat("POR")
-            usos_expr_node = self.parse_expressao_aritmetica(self.current_token.lineno)
-            self.eat("USOS")
-        return AponteLapisCS("APONTE_LAPIS", [usos_expr_node] if usos_expr_node else [], lineno=lineno)
+        
+        self.eat("POR")
+        usos_expr_node = self.parse_expressao_aritmetica(self.current_token.lineno)
+        self.eat("USOS")
+        
+        return AponteLapisCS("APONTE_LAPIS", [usos_expr_node], lineno=lineno)
 
     def parse_condicional(self, lineno) -> SeCS:
         self.eat("SE")

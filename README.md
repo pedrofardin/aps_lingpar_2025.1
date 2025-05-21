@@ -58,7 +58,7 @@ declaracao_variavel ::= "->" "guarde" IDENTIFICADOR "como" tipo ":" expressao
 atribuicao_variavel ::= "->" IDENTIFICADOR ":" expressao
 tipo ::= "numero" | "texto" | "logico"
 
-comando_aponte_lapis ::= "->" "aponte_lapis" [ "por" expressao_numerica "usos" ]
+comando_aponte_lapis ::= "->" "aponte_lapis" "por" expressao_numerica "usos"
 comando_escreva ::= "->" "escreva" "(" lista_expressoes_escreva ")"
 lista_expressoes_escreva ::= expressao { "," expressao }
 

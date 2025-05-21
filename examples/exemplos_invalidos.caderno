@@ -1,0 +1,52 @@
+# --- Erro 1: Token Desconhecido --- (Validador C)
+-> guarde @nome como texto : "Erro" 
+# @ não é um caractere esperado em um identificador aqui
+
+# --- Erro 2: Palavra-chave Faltando em Declaração --- (Parser Python)
+-> guarde valor numero : 10 
+# Faltou "como"
+
+# --- Erro 3: Tipo Inexistente --- (Parser Python, se checar o token TIPO_LITERAL)
+-> guarde data_especial como data : "01/01/2025"
+# Tipo "data" não existe
+
+# --- Erro 4: Condicional Mal Formada (Falta FIM_SE) --- (Parser Python)
+-> aponte_lapis
+-> guarde check como logico : verdadeiro
+se (check = verdadeiro) entao
+    -> escreva("Dentro do SE incompleto")
+# Faltou fim_se
+
+# --- Erro 5: Atribuição a Variável Não Declarada --- (Parser Python/SymbolTableCS)
+-> aponte_lapis
+-> contador_inexistente : 100
+-> escreva(contador_inexistente)
+
+# --- Erro 6: Incompatibilidade de Tipo na Atribuição --- (Parser Python/SymbolTableCS)
+-> aponte_lapis
+-> guarde nome como texto : "Ana"
+-> nome : 123 # Tentando atribuir número a texto
+-> escreva(nome)
+
+# --- Erro 7: Loop POR VEZES com contador não numérico --- (Parser Python)
+-> aponte_lapis
+-> guarde vezes_texto como texto : "tres"
+por vezes_texto vezes faca
+    -> escreva("Isso nao vai funcionar")
+fim_por
+
+# --- Erro 8: Uso de Operador com Tipos Incompatíveis --- (Parser Python/BinOpCS)
+-> aponte_lapis
+-> guarde num como numero : 5
+-> guarde txt como texto : "gatos"
+-> guarde resultado_erro como numero : num + txt
+-> escreva(resultado_erro)
+
+# --- Erro 9: APONTE_LAPIS com 'usos' mas sem 'por' --- (Parser Python)
+-> aponte_lapis 5 usos 
+# Deveria ser "por 5 usos"
+
+# --- Erro 10: Parênteses Desbalanceados no ESCREVA --- (Parser Python)
+-> aponte_lapis
+-> escreva("Mensagem inicial:" , "Outra parte" 
+# Faltou o ')' no final

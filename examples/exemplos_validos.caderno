@@ -1,0 +1,66 @@
+# --- Exemplo 1: Declaração e Escrita Básica ---
+-> aponte_lapis por 2 usos
+-> guarde saudacao como texto : "Ola, CadernoScript!"
+-> escreva(saudacao)
+
+# --- Exemplo 2: Operações Numéricas e Atribuição ---
+-> aponte_lapis por 3 usos
+-> guarde numA como numero : 10
+-> guarde numB como numero : 5
+-> numA : numA + numB * 2 # Precedência: 10 + (5*2) = 20
+-> escreva("numA agora eh:", numA)
+
+# --- Exemplo 3: Condicional Simples (SE) ---
+-> aponte_lapis por 1 usos
+-> guarde idade como numero : 18
+se (idade >= 18) entao
+    -> escreva("Maior de idade.")
+fim_se
+
+# --- Exemplo 4: Condicional com SENAO ---
+-> aponte_lapis por 2 usos
+-> guarde tem_sol como logico : falso
+se (tem_sol = verdadeiro) entao
+    -> escreva("Vamos a praia!")
+senao
+    -> escreva("Melhor ficar em casa.")
+fim_se
+
+# --- Exemplo 5: Loop ENQUANTO ---
+-> aponte_lapis por 4 usos
+-> guarde contador como numero : 3
+enquanto (contador > 0) faca
+    -> escreva("Contador:", contador)
+    -> contador : contador - 1
+fim_enquanto
+-> escreva("Fim do enquanto!")
+
+# --- Exemplo 6: Loop POR VEZES ---
+-> aponte_lapis por 3 usos
+por 2 vezes faca
+    -> escreva("Iteracao do POR VEZES")
+fim_por
+
+# --- Exemplo 7: Variáveis Lógicas e Operador NAO ---
+-> aponte_lapis por 1 usos
+-> guarde porta_aberta como logico : verdadeiro
+-> porta_aberta : nao porta_aberta
+se (porta_aberta = falso) entao
+    -> escreva("A porta esta fechada.")
+fim_se
+
+# --- Exemplo 8: Múltiplos itens no ESCREVA ---
+-> aponte_lapis por 1 usos
+-> guarde item1 como texto : "Cafe"
+-> guarde item2 como numero : 2
+-> escreva("Pedido:", item1, "Quantidade:", item2)
+
+# --- Exemplo 9: Aponte Lapis sem especificar usos (usa padrão) ---
+-> aponte_lapis por 2 usos
+-> escreva("Este lapis tem usos padrao.")
+-> escreva("Outra escrita com o mesmo lapis.")
+
+# --- Exemplo 10: Comentários e estrutura vazia (se permitido) ---
+# Este é um comentário
+-> guarde valor_vazio como numero # Declaração sem inicialização explícita
+# Fim do programa
