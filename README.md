@@ -27,13 +27,13 @@ Este projeto foi desenvolvido como parte da disciplina de **Linguagens e Paradig
 *   **Tipos Básicos:** Suporte para `numero` (inteiros e decimais), `texto` (strings) e `logico` (booleano).
 *   **Estruturas Essenciais:** Inclui declaração de variáveis, atribuição, condicionais (`se`/`senao`) e loops (`enquanto`/`por N vezes`).
 *   **Comentários:** Usa `#` para comentários de linha única.
-*   **Mecânica do Lápis:** O comando `escreva` depende do "lápis" estar apontado. O comando `-> aponte_lapis por N usos` gerencia esse recurso.
+*   **Mecânica do Lápis:** O comando `escreva` depende do "lápis" estar apontado. O comando `-> aponte_lapis por N usos` gerencia esse recurso, onde `N` é uma expressão numérica que define quantos "usos" o lápis terá.
 
 ## Estrutura do Projeto
 
 *   `src/`: Contém os arquivos fonte do validador C (arquivos `.l` do Flex, `.y` do Bison, e `main.c`).
 *   `interpreter/`: Contém o script Python `cadernoscript_interpreter.py` responsável pela execução semântica dos comandos.
-*   `examples/`: Contém arquivos de exemplo `.caderno` para demonstrar e testar a linguagem.
+*   `examples/`: Contém arquivos de exemplo `.caderno` para demonstrar e testar a linguagem (`exemplos_validos.caderno`, `exemplos_invalidos.caderno`).
 *   `doc/`: (Opcional) Pode conter documentação adicional, como o EBNF detalhado ou diagramas.
 *   `bin/`: Diretório onde o executável `validador_cadernoscript` é colocado após a compilação.
 *   `build/`: Diretório onde os arquivos objeto e intermediários da compilação C são colocados.
@@ -66,34 +66,46 @@ comando_se ::= "->" "se" condicao "entao" EOL { instrucao } [ "senao" EOL { inst
 comando_enquanto ::= "->" "enquanto" condicao "faca" EOL { instrucao } "fim_enquanto"
 comando_por ::= "->" "por" expressao_numerica "vezes" "faca" EOL { instrucao } "fim_por"
 
-expressao ::= (* Definição detalhada de expressões com precedência... *)
-              IDENTIFICADOR | LITERAL_NUMERO | LITERAL_TEXTO | LITERAL_LOGICO | "(" expressao ")"
-              (* ... operadores aritméticos, lógicos, comparativos ... *)
+expressao ::= termo_logico { ( "ou" ) termo_logico }
+termo_logico ::= fator_logico { ( "e" ) fator_logico }
+fator_logico ::= [ "nao" ] expressao_comparativa | expressao_comparativa
+expressao_comparativa ::= expressao_aditiva [ operador_comparacao expressao_aditiva ]
+expressao_aditiva ::= termo_multiplicativo { ( "+" | "-" ) termo_multiplicativo }
+termo_multiplicativo ::= fator { ( "*" | "/" ) fator }
+fator ::= IDENTIFICADOR | LITERAL_NUMERO | LITERAL_TEXTO | LITERAL_LOGICO | "(" expressao ")" | ( "+" | "-" ) fator
 
 IDENTIFICADOR ::= letra { letra | digito | "_" }
 LITERAL_NUMERO ::= digito { digito } [ "." digito { digito } ]
 LITERAL_TEXTO ::= "\"" { QUALQUER_CARACTERE_EXCETO_ASPAS_E_NOVA_LINHA } "\""
 LITERAL_LOGICO ::= "verdadeiro" | "falso"
+operador_comparacao ::= "=" | "!=" | "<" | "<=" | ">" | ">="
 
-*(Para a EBNF completa e detalhada, consulte a documentação ou o arquivo EBNF específico no repositório, se houver.)*
+*(Para uma análise mais aprofundada da gramática, incluindo as definições de `letra` e `digito` (implícitas nas regras de tokens do Flex), consulte os arquivos `src/cadernoscript.l` para a definição de tokens e `src/cadernoscript.y` para a estrutura gramatical.)*
 
 ## Arquitetura
 
-A CadernoScript opera em um pipeline de duas etapas principais:
+A CadernoScript opera com dois componentes principais que interagem durante a execução gerenciada pelo `Makefile`:
 
 1.  **Validador (C com Flex & Bison):**
-    *   Localizado em `src/` e compilado para `bin/validador_cadernoscript`.
-    *   **Análise Léxica (Flex):** O arquivo `cadernoscript.l` define as regras para quebrar o código fonte `.caderno` em uma sequência de tokens.
-    *   **Análise Sintática (Bison):** O arquivo `cadernoscript.y` define a gramática da linguagem e verifica se a sequência de tokens forma instruções válidas.
-    *   **Saída:** Se a sintaxe estiver correta, o validador imprime o script original para `stdout` e uma mensagem "Sintaxe OK" para `stderr`. Se houver erros, ele os reporta para `stderr`.
+    *   **Localização:** Código fonte em `src/`, executável compilado em `bin/validador_cadernoscript`.
+    *   **Análise Léxica (Flex - `src/cadernoscript.l`):** Processa o arquivo `.caderno` e o divide em uma sequência de tokens (palavras-chave, identificadores, literais, operadores).
+    *   **Análise Sintática (Bison - `src/cadernoscript.y`):** Recebe os tokens do Flex. Atualmente, com uma gramática simplificada, verifica se todos os tokens são conhecidos pela linguagem.
+    *   **Saída (com o `main.c` atual):**
+        *   Se todos os tokens forem reconhecidos: imprime a mensagem "Sintaxe OK." para a saída padrão (`stdout`).
+        *   Se um erro léxico for encontrado: imprime uma mensagem de erro para a saída de erro (`stderr`).
 
-2.  **Interpretador (Python):**
-    *   Localizado em `interpreter/cadernoscript_interpreter.py`.
-    *   Recebe o script CadernoScript validado via `stdin`.
-    *   Processa cada instrução, realizando as ações semânticas: gerenciando variáveis, avaliando expressões, controlando o fluxo de condicionais e loops, e executando comandos como `escreva` (respeitando a mecânica do "lápis").
+2.  **Interpretador (Python - `interpreter/cadernoscript_interpreter.py`):**
+    *   **Entrada:** Nos alvos de execução do `Makefile` (como `make run_validos`), após o Validador C ser executado no arquivo de exemplo, o `Makefile` instrui o Interpretador Python a ler o **mesmo arquivo de script CadernoScript original** diretamente do disco. Este arquivo é passado como entrada padrão (`stdin`) para o script Python quando o argumento `-` é utilizado.
+    *   **Análise Sintática Detalhada e Análise Semântica:** O Interpretador Python contém seu próprio parser recursivo descendente que analisa a estrutura completa de cada comando CadernoScript. Ele também realiza a análise semântica.
+    *   **Execução:** Avalia as instruções, gerenciando variáveis, calculando expressões (respeitando a precedência de operadores), controlando o fluxo de condicionais e loops, e executando comandos como `escreva` (com a mecânica do "lápis") e `leia`. Reporta erros de sintaxe específicos da estrutura dos comandos ou erros de execução/semânticos.
 
-O fluxo de execução é tipicamente:
-`entrada.caderno` | `validador_cadernoscript` | (stdout) -> (stdin) | `python3 cadernoscript_interpreter.py -` | (saída do programa)
+**Fluxo de Execução (Conforme Gerenciado pelo `Makefile` nos Alvos `run_...`):**
+
+1.  O `Makefile` executa `bin/validador_cadernoscript < examples/arquivo_exemplo.caderno`.
+    *   O validador verifica os tokens. Se tudo OK, imprime "Sintaxe OK." no `stdout`.
+2.  Se o validador C não retornar um status de erro, o `Makefile` então executa:
+    `python3 interpreter/cadernoscript_interpreter.py - < examples/arquivo_exemplo.caderno`.
+    *   O interpretador Python lê o `arquivo_exemplo.caderno` (novamente, do disco) e o executa.
 
 ## Como Compilar e Executar
 
@@ -121,35 +133,32 @@ Este projeto utiliza `make` para gerenciar a compilação do validador.
     make clean
     ```
 
-3.  **Testar apenas a validação sintática de um exemplo:**
-    Este comando executa o validador C com o arquivo exemplos_validos.caderno.
+3.  **Testar apenas a validação sintática dos exemplos válidos:**
+    Este comando executa o validador C com o arquivo `exemplos_validos.caderno`.
     ```bash
     make test_validation_validos
     ```
 
 4.  **Testar apenas a validação sintática dos exemplos inválidos:**
-    Este comando executa o validador C com o arquivo exemplos_invalidos.caderno. Espera-se que alguns erros sejam reportados aqui pelo validador C.
+    Este comando executa o validador C com o arquivo `exemplos_invalidos.caderno`. Espera-se que alguns erros sejam reportados aqui pelo validador C.
     ```bash
     make test_validation_invalidos
     ```
 
-5. **Executar os exemplos válidos (validador + interpretador):**
-    Este comando passa o script exemplos_validos.caderno pelo validador e, se bem-sucedido, executa com o interpretador Python.
+5.  **Executar os exemplos válidos (validador + interpretador):**
+    Este comando passa o script `exemplos_validos.caderno` pelo validador e, se bem-sucedido, executa com o interpretador Python.
     ```bash
     make run_validos
     ```
 
-6. **Executar os exemplos inválidos (validador + interpretador):**
-    Tenta executar exemplos_invalidos.caderno. Espera-se que o validador C ou o interpretador Python reportem erros.
-
+6.  **Executar os exemplos inválidos (validador + interpretador):**
+    Tenta executar `exemplos_invalidos.caderno`. Espera-se que o validador C ou o interpretador Python reportem erros.
     ```bash
     make run_invalidos
     ```
-    *(Nota: A regra run_minimos foi removida para simplificar, já que exemplos_validos.caderno pode conter os testes mínimos)*
 
-7. **Executar todos os testes (válidos e inválidos):**
-    Executa run_validos e depois run_invalidos.
-
+7.  **Executar todos os testes (válidos e inválidos):**
+    Executa `run_validos` e depois `run_invalidos`.
     ```bash
     make run_all_tests
     ```
@@ -162,50 +171,59 @@ Após compilar com `make`, você pode executar manualmente:
     ```bash
     bin/validador_cadernoscript < examples/seu_arquivo.caderno
     ```
-    (Verifique `stderr` para status e `stdout` para o script se OK)
+    (Saída esperada em `stdout`: "Sintaxe OK." se não houver erro léxico. Erros em `stderr`.)
 
-*   **Validador e interpretador em pipeline:**
+*   **Apenas o interpretador (assumindo que o script é válido):**
     ```bash
-    bin/validador_cadernoscript < examples/seu_arquivo.caderno | python3 interpreter/cadernoscript_interpreter.py -
+    python3 interpreter/cadernoscript_interpreter.py - < examples/seu_arquivo.caderno
     ```
 
-## Exemplo de Código (`examples/meu_programa.caderno`)
+## Exemplos de Código CadernoScript
 
+Abaixo estão alguns exemplos curtos para ilustrar a sintaxe e as principais características da CadernoScript. Para um conjunto mais completo de testes, consulte os arquivos na pasta `examples/`.
+
+**1. Declaração de Variáveis e Saída Simples:**
 ```cadernoscript
-# Teste CadernoScript
--> guarde msg como texto : "Bem-vindo ao CadernoScript!"
--> guarde contador como numero : 0
+# Declarando variáveis de diferentes tipos
+-> guarde mensagem como texto : "Bem-vindo!"
+-> guarde ano como numero : 2024
 -> guarde ativo como logico : verdadeiro
 
+# Usando o lápis para escrever
 -> aponte_lapis por 3 usos
--> escreva (msg)
--> escreva ("Contador inicial:", contador, " | Ativo:", ativo)
+-> escreva (mensagem)
+-> escreva ("Estamos no ano:", ano)
+-> escreva ("Status ativo:", ativo)
+```
 
-se (contador < 5 e ativo = verdadeiro) entao
-    -> escreva ("Dentro do SE, o contador eh menor que 5 e ativo eh verdadeiro.")
-    -> contador : contador + 10
+Este exemplo mostra a declaração de variáveis dos tipos texto, numero e logico, e o uso do comando escreva (que depende do aponte_lapis por N usos).
+
+**2. Operações e Condicionais:**
+```cadernoscript
+-> aponte_lapis por 1 uso # Lápis para a saída do condicional
+-> guarde pontuacao como numero : 75
+-> guarde meta como numero : 60
+
+se (pontuacao >= meta e meta > 50) entao
+    -> escreva ("Parabens, meta atingida e eh uma boa meta!")
 senao
-    -> escreva ("Dentro do SENAO.")
+    -> escreva ("Continue tentando ou ajuste a meta!")
 fim_se
+```
+Demonstra uma estrutura condicional se/senao/fim_se com uma condição composta (e) e comparação numérica.
 
--> escreva ("Apos o SE, contador:", contador) # Lapis deve acabar aqui, proximo 'escreva' pode ser suprimido
-
--> aponte_lapis por 5 usos
-enquanto (contador > 0 e contador < 15) faca
-    -> escreva ("No ENQUANTO, contador:", contador)
-    -> contador : contador - 3
-    se (contador < 2) entao
-        -> escreva ("Alerta: Contador muito baixo dentro do ENQUANTO!")
-    fim_se
+**3. Loop enquanto e Atribuição:**
+```cadernoscript
+-> aponte_lapis por 4 usos # Lápis para as 3 contagens + 1 para "Lancamento!"
+-> guarde contador como numero : 3
+enquanto (contador > 0) faca
+    -> escreva ("Contagem regressiva:", contador)
+    -> contador : contador - 1 # Atualizando o valor da variável
 fim_enquanto
+-> escreva ("Lancamento!")
+```
 
--> escreva ("Apos ENQUANTO, contador:", contador)
-
-por 2 vezes faca
-    -> escreva ("Iteracao do loop POR VEZES.")
-fim_por
-
--> escreva ("Fim do programa exemplo!")
+Ilustra o loop enquanto e a reatribuição de valor a uma variável.
 
 ## Licença
 
