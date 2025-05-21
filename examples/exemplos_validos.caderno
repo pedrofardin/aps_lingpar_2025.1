@@ -55,9 +55,9 @@ fim_se
 -> guarde item2 como numero : 2
 -> escreva("Pedido:", item1, "Quantidade:", item2)
 
-# --- Exemplo 9: Aponte Lapis sem especificar usos (usa padrão) ---
+# --- Exemplo 9: Aponte Lapis especificando a quantidade dos usos ---
 -> aponte_lapis por 2 usos
--> escreva("Este lapis tem usos padrao.")
+-> escreva("Este lapis tem 2 usos")
 -> escreva("Outra escrita com o mesmo lapis.")
 
 # --- Exemplo 10: Comentários e estrutura vazia (se permitido) ---
