@@ -27,7 +27,7 @@ Este projeto foi desenvolvido como parte da disciplina de **Linguagens e Paradig
 *   **Tipos Básicos:** Suporte para `numero` (inteiros e decimais), `texto` (strings) e `logico` (booleano).
 *   **Estruturas Essenciais:** Inclui declaração de variáveis, atribuição, condicionais (`se`/`senao`) e loops (`enquanto`/`por N vezes`).
 *   **Comentários:** Usa `#` para comentários de linha única.
-*   **Mecânica do Lápis:** O comando `escreva` depende do "lápis" estar apontado. O comando `-> aponte_lapis [por N usos]` gerencia esse recurso.
+*   **Mecânica do Lápis:** O comando `escreva` depende do "lápis" estar apontado. O comando `-> aponte_lapis por N usos` gerencia esse recurso.
 
 ## Estrutura do Projeto
 
@@ -122,33 +122,36 @@ Este projeto utiliza `make` para gerenciar a compilação do validador.
     ```
 
 3.  **Testar apenas a validação sintática de um exemplo:**
-    Este comando executa o validador com um arquivo de exemplo e mostra se a sintaxe está OK (mensagem em `stderr`) e o script original (em `stdout`).
+    Este comando executa o validador C com o arquivo exemplos_validos.caderno.
     ```bash
-    make test_validation
+    make test_validation_validos
     ```
-    (Atualmente configurado para usar `examples/meu_programa.caderno`)
 
-4.  **Executar um exemplo completo (validador + interpretador):**
-    Este comando passa o script pelo validador e, se a sintaxe estiver correta, envia o script para o interpretador Python.
-
+4.  **Testar apenas a validação sintática dos exemplos inválidos:**
+    Este comando executa o validador C com o arquivo exemplos_invalidos.caderno. Espera-se que alguns erros sejam reportados aqui pelo validador C.
     ```bash
-    make run_example
+    make test_validation_invalidos
     ```
-    Usa: `examples/meu_programa.caderno`
 
-5. **Executar os testes mínimos da linguagem:**
-    Roda um conjunto compacto de testes cobrindo declaração, atribuição, controle de fluxo, lápis e operadores.
-
+5. **Executar os exemplos válidos (validador + interpretador):**
+    Este comando passa o script exemplos_validos.caderno pelo validador e, se bem-sucedido, executa com o interpretador Python.
     ```bash
-    make run_minimos
+    make run_validos
     ```
-    Usa: `examples/testes_minimos.caderno`
 
-6. **Executar todos os exemplos disponíveis:**
-    Executa tanto o exemplo principal quanto os testes mínimos em sequência.
+6. **Executar os exemplos inválidos (validador + interpretador):**
+    Tenta executar exemplos_invalidos.caderno. Espera-se que o validador C ou o interpretador Python reportem erros.
 
     ```bash
-    make run_all_examples
+    make run_invalidos
+    ```
+    *(Nota: A regra run_minimos foi removida para simplificar, já que exemplos_validos.caderno pode conter os testes mínimos)*
+
+7. **Executar todos os testes (válidos e inválidos):**
+    Executa run_validos e depois run_invalidos.
+
+    ```bash
+    make run_all_tests
     ```
 
 **Executando manualmente:**
@@ -187,7 +190,7 @@ fim_se
 
 -> escreva ("Apos o SE, contador:", contador) # Lapis deve acabar aqui, proximo 'escreva' pode ser suprimido
 
--> aponte_lapis # Usa padrao (ex: 5 usos)
+-> aponte_lapis por 5 usos
 enquanto (contador > 0 e contador < 15) faca
     -> escreva ("No ENQUANTO, contador:", contador)
     -> contador : contador - 3
